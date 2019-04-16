@@ -50,7 +50,7 @@ enemy.prototype.setAggron=function(){
               }
 
           }
-        //   this.dirY=this.dirY+5; ///////
+        
     
 
     }

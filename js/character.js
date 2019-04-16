@@ -106,6 +106,7 @@ character.prototype.getWidth = function () {
 }
 character.prototype.shoot = function () {
   if (delay <= 0) {
+    
     allShoot.push(new fire());
     delay = 2;
   }

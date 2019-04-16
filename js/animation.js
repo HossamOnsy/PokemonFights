@@ -2,13 +2,13 @@ var animation = function () {
 
   this.startGame
 }
-var canWidth = 1350;
-var canHight = 1000; //canvas dimensions
+
 
 var x = 0;
 var y = 0;
 var press = false;
 var bonusCounter = 0;
+var bonusCondition=10;
 
 
 var gravity = 7;
@@ -51,6 +51,10 @@ var backgroundScroll2 = new backgroundAnimate(canvasW, 0, canvasW, canvasH);
 var playerCharacter = new character();
 
 
+var eggX = 50;
+var eggY = 30;
+
+
 animation.prototype.startGame = function (character, level) {
   startGame(character, level);
 }
@@ -61,10 +65,13 @@ function startGame(char, level) {
   this.char = char;
   this.level = level;
   eggs = [];
+  allShoot=[];
+  eggX = 50;
   hp = 100;
   enterKey = false;
   setSpeed();
   playerCharacter.selectCharacter(char);
+  bonusCondition=bonusCondition * level;
 
   mainInterval = setInterval(drawImage, 100 - speed);
 }
@@ -85,10 +92,6 @@ function setSpeed() {
       break;
   }
 }
-
-var eggX = 50
-var eggY = 30
-
 
 function updateFrame() {
   ////will be used later
@@ -117,7 +120,7 @@ function drawHP() {
   context.fillRect(canvasW - 240, 10, hp * 2, 20);
   context.font = "12pt Calibri";
   context.fillStyle = "white";
-  context.fillText("HP " + hp, canWidth - 280, 25);
+  context.fillText("HP " + hp, canvasW - 293, 25);
 }
 
 function drawImage(key) {
@@ -148,7 +151,9 @@ function drawImage(key) {
     eggs.splice(eggs.length - 1, 1);
     hp = 100;
   }
-
+  eggs.forEach(function (lives) {
+    lives.draw();
+  })
 
   allShoot.forEach(function (fired) {
     fired.updateFireFrame();
@@ -174,56 +179,13 @@ function drawImage(key) {
 
     }
 
-
   })
-  eggs.forEach(function (lives) {
-    lives.draw();
-  })
+  
 
-  enemies.forEach(function (enemy) {
-    enemy.update();
-  })
-  enemies = enemies.filter(function (enemy) {
-    return enemy.active;
-  })
-
-
-  var no = Math.random();
-  if (no < 0.1) {
-
-    // Math.random() generates a random number between 0 and 1.
-    var x = canvas.width;
-    // multiplied by 100 to generate enemies in the region from 0 to 100px.
-
-    var y = Math.floor(Math.random() * canvas.height - 100);
-    if (y <= 90) {
-      y = 90;
-    }
-    var speed = Math.random() * 10 + 2;
-    var negative = Math.random();
-    if (negative < 0.5) {
-      speed = -speed;
-    }
-    var e = new enemy(x, y);
-    e.setAggron();
-    enemies.push(e);
-
-  }
-
-
-
-  enemies.forEach(function (enemy) {
-
-    if (isCollidingWithPlayer(playerCharacter, enemy)) {
-      enemy.active = false;
-      hp = hp - Math.floor(Math.random() * 25 + 1)
-
-    } else {
-      enemy.draw()
-    }
-
-
-  })
+  
+  setRandomEnemy();
+  drawingEnemies();
+  
 
 
 
@@ -248,18 +210,56 @@ function drawImage(key) {
 
 }
 
+function drawingEnemies(){
+  enemies.forEach(function (enemy) {
+    enemy.update();
+  })
+  enemies = enemies.filter(function (enemy) {
+    return enemy.active;
+  })
+  enemies.forEach(function (enemy) {
+
+    if (isCollidingWithPlayer(playerCharacter, enemy)) {
+      enemy.active = false;
+      hp = hp - Math.floor(Math.random() * 25 + 1)
+
+    } else {
+      enemy.draw()
+    }
+
+
+  })
+}
+
+function setRandomEnemy() {
+  var no = Math.random();
+  if (no < 0.1) {
+
+    // Math.random() generates a random number between 0 and 1.
+    var x = canvas.width;
+    // multiplied by 100 to generate enemies in the region from 0 to 100px.
+
+    var y = Math.floor(Math.random() * canvas.height - 100);
+    if (y <= 90) {
+      y = 90;
+    }
+    var speed = Math.random() * 10 + 2;
+    var negative = Math.random();
+    if (negative < 0.5) {
+      speed = -speed;
+    }
+    var e = new enemy(x, y);
+    e.setAggron();
+    enemies.push(e);
+
+  }
+
+}
+
+
 window.addEventListener("keypress", checkKey);
 
-function checkKey(key) {
-  if (key.which == '119' || key.keyCode == "119") {
-    press = true;
 
-  }
-  if (key.which == '32') {
-    spaceKey = true;
-
-  }
-}
 
 
 
@@ -273,9 +273,6 @@ function gameOver() {
   context.fillText("Game Over", (canvasW / 2) - 140, canvasH / 2);
   context.fillText("Press Enter to Try Again", (canvasW / 2) - 310, (canvasH / 2) + 60);
 
-
-
-
 }
 
 function playerWin() {
@@ -287,7 +284,8 @@ function playerWin() {
 
   context.font = "50pt Calibri";
   context.fillStyle = "white";
-  context.fillText("winner", (canvasW / 2) - 80, canvasH / 2);
+  context.fillText("Winner", (canvasW / 2) - 80, canvasH / 2);
+  context.fillText("Press Enter to next level", (canvasW / 2) - 310, (canvasH / 2) + 60);
   if (enterKey) {
     playAgain();
   }
@@ -296,8 +294,7 @@ function playerWin() {
 function playAgain() {
   if (enterKey == true && (playerCharacter.active == false) || playerCharacter.status) {
 
-
-    char++;
+    char = ((char+1)%3);
     level++;
     startGame(char, level);
   }
