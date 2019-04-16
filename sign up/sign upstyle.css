@@ -1,0 +1,56 @@
+body {
+    background-image: url("signup.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#sign-up-centered-div {
+    margin: 2% auto;
+    width: 350px;
+    background-color: rgba(144, 194, 174, 0.7);
+    border-radius: 12px;
+    
+}
+#sign-up-centered-div * {
+    width: 90%;
+    margin: 0 5%;
+}
+#sign-up-centered-div p {
+    color: white;
+}
+#sign-up-centered-div input {
+    margin-bottom: 20px;
+    height: 40px;
+}
+
+form {
+    padding: 50px 0;
+}
+form a:link {
+    font-size: 12px;
+    color: wheat;
+}
+form a:visited {
+    color: rgb(255, 115, 0);
+}
+form a:hover {
+    color: yellow;
+}
+form a:active {
+    color: yellowgreen;
+}form.size{
+    width:30px;
+}
+#sign-up-button {
+    border-radius: 12px;
+    border: none;
+    background-color: red;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: sans-serif
+}
+#sign-up-button:hover {
+    color: yellow;
+}
