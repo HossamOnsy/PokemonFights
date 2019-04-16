@@ -140,7 +140,7 @@ function drawImage(key) {
   }
 
 
-  if (bonusCounter > 5) {
+  if (bonusCounter > bonusCondition) {
     bonusCounter = 0;
     eggs.push(new lives(eggX, eggY))
     eggX += 50;
