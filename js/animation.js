@@ -149,6 +149,7 @@ function drawImage(key) {
     playerCharacter.characterDie();
   } else if (hp < 0) {
     eggs.splice(eggs.length - 1, 1);
+    eggX -= 50;
     hp = 100;
   }
   eggs.forEach(function (lives) {
