@@ -101,11 +101,7 @@ function setSpeed() {
   }
 }
 
-function updateFrame() {
-  ////will be used later
 
-
-}
 
 function isCollidingWithPlayer(player, enemy) {
   var x_axis = Math.abs(player.dirX - enemy.dirX) <= Math.max(player.width, enemy.width);
